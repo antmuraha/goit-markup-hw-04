@@ -8,15 +8,24 @@ p {
   padding: 0;
 }
 
-ul {
+ul,
+ol {
   margin: 0;
   padding-left: 0;
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+}
+
 img {
   display: block;
   max-width: 100%;
+}
+
+svg {
+  display: block;
 }
 
 :root {
@@ -40,14 +49,21 @@ img {
   --color-primary: var(--navy-blue);
   --color-secondary: var(--cloud);
   --button-background: var(--iris);
+  --icon-background: var(--iris);
   --color-active: var(--ocean);
   --color-paragraph: var(--slate);
   --color-link: var(--navy-blue);
   --color-address-link: var(--slate);
+
   --header-border-color: var(--cornflower);
+
+  --cart-info-background: var(--iris);
   --card-border-color: var(--cornflower);
 
   --container-padding: 15px;
+
+  --transition-duration: 250ms;
+  --transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .visually-hidden {
@@ -118,11 +134,6 @@ a {
   display: inline-block;
   font-weight: 500;
   color: var(--color-primary);
-  text-decoration: none;
-}
-
-.flex {
-  flex: 1;
 }
 
 .logo {
@@ -169,6 +180,9 @@ a {
 .nav-link {
   padding: 24px 0;
   color: var(--color-link);
+  transition-property: color;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
 }
 
 .address-list {
@@ -180,6 +194,9 @@ a {
 .address-link {
   padding: 24px 0;
   color: var(--color-address-link);
+  transition-property: color;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
 }
 
 .nav-link:hover,
@@ -191,8 +208,65 @@ a {
   color: var(--color-active);
 }
 
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -1px;
+  width: 100%;
+  height: 4px;
+  border: none;
+  border-radius: 2px;
+  background-color: transparent;
+  transition-property: background-color;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
+}
+
+.nav-link:hover:after,
+.nav-link:active:after,
+.nav-link:focus:after {
+  background-color: var(--color-active);
+}
+
 .address {
   font-style: normal;
+}
+
+.social-button a,
+.person-social-button a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--icon-background);
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
+}
+
+.social-button svg,
+.person-social-button svg {
+  fill: var(--white);
+}
+
+.person-social-button a:hover,
+.person-social-button a:active,
+.person-social-button a:focus {
+  background-color: var(--color-active);
+}
+
+.social-button a:hover,
+.social-button a:active,
+.social-button a:focus {
+  background-color: var(--green);
 }
 
 /* SECTION 1 STUDIO */
@@ -200,6 +274,15 @@ a {
 .studio {
   padding: 188px 0;
   background: var(--color-primary);
+  background-image: linear-gradient(
+      to bottom,
+      rgba(46, 47, 66, 0.7),
+      rgba(46, 47, 66, 0.7)
+    ),
+    url('../images/people-office.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
 .studio .container {
@@ -220,17 +303,20 @@ a {
   letter-spacing: 0.04em;
   line-height: 1.5;
   color: var(--white);
-  background: var(--button-background);
+  background-color: var(--button-background);
   border: none;
   border-radius: 4px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
 }
 
 .btn-service:hover,
 .btn-service:active,
 .btn-service:focus {
-  background: var(--color-active);
+  background-color: var(--color-active);
 }
 
 /* SECTION 2 STRATEGY */
@@ -241,6 +327,18 @@ a {
 
 .strategy-card {
   flex: 1;
+}
+
+.strategy-icon-card {
+  padding: 24px 0;
+  border-radius: 4px;
+  border: 1px solid var(--light-slate);
+  background: var(--cloud);
+  margin-bottom: 8px;
+}
+
+.strategy-icon-card svg {
+  margin: 0 auto;
 }
 
 .strategy-card .title {
@@ -272,7 +370,7 @@ a {
 }
 
 .team-card-content {
-  padding: 32px 0;
+  padding: 32px 16px;
 }
 
 .team-card-content > h3.title {
@@ -282,6 +380,12 @@ a {
 
 .team-desc {
   font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.person-social-links {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* SECTION 4 PORTFOLIO */
@@ -301,6 +405,40 @@ a {
 .portfolio-card {
   flex: 1;
   flex-basis: calc(33% - 24px * 2);
+}
+
+.portfolio-image-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-card-info {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 100%;
+  padding: 40px 32px;
+  background-color: var(--cart-info-background);
+  color: var(--white);
+  font-family: Roboto;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.32px;
+  transition-property: top;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
+}
+
+.portfolio-card:hover .portfolio-card-info,
+.portfolio-card:active .portfolio-card-info {
+  top: 0%;
+}
+
+.portfolio-card:hover,
+.portfolio-card:active {
+  box-shadow: 0px 1px 6px 0px rgba(46, 47, 66, 0.08),
+    0px 1px 1px 0px rgba(46, 47, 66, 0.16),
+    0px 2px 1px 0px rgba(46, 47, 66, 0.08);
 }
 
 .portfolio-card-content {
@@ -325,6 +463,11 @@ a {
   background: var(--color-primary);
 }
 
+.footer .container {
+  display: flex;
+  gap: 120px;
+}
+
 .footer-logo {
   display: inline-block;
   margin-bottom: 16px;
@@ -337,4 +480,20 @@ a {
 .footer-description {
   width: 264px;
   color: var(--color-secondary);
+}
+
+.social-media-heading {
+  color: var(--white);
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.32px;
+  margin-bottom: 16px;
+}
+
+.social-links {
+  display: flex;
+  gap: 16px;
 }
